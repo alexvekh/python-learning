@@ -1,10 +1,6 @@
-pool = 1000
-quantity = int(input("Enter the number of mailings: "))
-try:
-    chunk = pool // quantity
-except TypeError:
-    print('Wrong number')
-except ZeroDivisionError:
-    print('Not a zero!')
-else:
-     print(chunk, 'SMS in one package.')
+def cost_delivery(quantity, *some, discount=0):
+  if quantity:
+    cost = (3 + (quantity * 2))
+  if discount:
+    cost = cost * discount
+  return cost 
