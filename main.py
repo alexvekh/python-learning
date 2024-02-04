@@ -1,23 +1,21 @@
-def split_list(grade):
-    over_middle_list = []
-    under_middle_list = []
+def is_valid_pin_codes(pin_codes):
+    if len(pin_codes) == 0:
+        return False
 
-    sum = 0
-    count = 0
-    for g in grade:
-        sum += g
-        count += 1
-    
-    middle = sum / count
-
-    for g in grade:
-        if g > middle:
-            over_middle_list.append(g)
+    pin_set = set()
+    for pin in pin_codes:
+        if not isinstance(pin, str):
+            return False
+        if len(pin) != 4:
+            return False
+        try:
+            int(pin)
+        except ValueError:
+            return False
+        if pin in pin_set:
+            return False
         else:
-            under_middle_list.append(g)
-
-    tuple = (under_middle_list, over_middle_list)
- 
-    return tuple
-
-split_list([1, 12, 3, 24, 5])
+            pin_set.add(pin)
+    else:
+        return True
+print(is_valid_pin_codes(['1101', '9034', '0011']))
