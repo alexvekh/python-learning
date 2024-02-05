@@ -1,21 +1,16 @@
-def is_valid_pin_codes(pin_codes):
-    if len(pin_codes) == 0:
-        return False
+import sys
 
-    pin_set = set()
-    for pin in pin_codes:
-        if not isinstance(pin, str):
-            return False
-        if len(pin) != 4:
-            return False
-        try:
-            int(pin)
-        except ValueError:
-            return False
-        if pin in pin_set:
-            return False
+
+def parse_args():
+    result = ""
+    sys.argv.pop(0)     # delete [0]
+    is_1_arg = True
+    for arg in sys.argv:
+        if is_1_arg:
+            is_1_arg = False
+            result = result + arg
         else:
-            pin_set.add(pin)
-    else:
-        return True
-print(is_valid_pin_codes(['1101', '9034', '0011']))
+            result = result + " " + arg    
+    
+    return result
+print(parse_args())

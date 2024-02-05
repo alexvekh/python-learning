@@ -148,3 +148,38 @@ def is_valid_password(password):
         return True
     else:
         return False
+
+# 9
+# Напишіть функцію parse_folder, вона приймає єдиний параметр path, який є об'єктом Path. Функція повинна просканувати директорію path та повернути кортеж із двох списків. Перший — це список файлів усередині директорії, другий — список директорій.
+    
+#from pathlib import Path
+def parse_folder(path):
+    files = []
+    folders = []
+
+    for i in path.iterdir():
+        if i.is_dir():
+            folders.append(i.name)
+        else:
+            files.append(i.name)
+
+    return files, folders
+
+# 10
+# Створіть функцію parse_args, яка повертає рядок, складений з аргументів командного рядка, розділених пробілами. Наприклад, якщо скрипт був викликаний командою: python run.py first second, то функція parse_args повинна повернути рядок наступного виду 'first second'.
+
+import sys
+
+def parse_args():
+    result = ""
+    sys.argv.pop(0)     # delete [0]
+    is_1_arg = True
+    for arg in sys.argv:
+        if is_1_arg:
+            is_1_arg = False
+            result = result + arg
+        else:
+            result = result + " " + arg    
+    
+    return result
+print(parse_args())
