@@ -1,16 +1,9 @@
-import sys
+def sanitize_phone_number(phone):
+    return phone.strip().replace("-", "").replace("(", "").replace(")", "").replace("+", "").replace(" ", "")
+        
 
-
-def parse_args():
-    result = ""
-    sys.argv.pop(0)     # delete [0]
-    is_1_arg = True
-    for arg in sys.argv:
-        if is_1_arg:
-            is_1_arg = False
-            result = result + arg
-        else:
-            result = result + " " + arg    
-    
-    return result
-print(parse_args())
+print(sanitize_phone_number("    +38(050)123-32-34"))
+print(sanitize_phone_number("     0503451234"))
+print(sanitize_phone_number("(050)8889900"))
+print(sanitize_phone_number("38050-111-22-22"))
+print(sanitize_phone_number("38050 111 22 11   "))
