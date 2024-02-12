@@ -1,41 +1,15 @@
-# Приймати список телефонних номерів.
-# Санітизувати (нормалізувати) отриманий список телефонів клієнтів за допомогою нашої функції sanitize_phone_number.
-# Сортувати телефонні номери за вказаними у таблиці країнами.
-# Повертати словник зі списками телефонних номерів для кожної країни у такому вигляді:
+grades = {"A": 5, "B": 5, "C": 4, "D": 3, "E": 3, "FX": 2, "F": 1}
 
-def sanitize_phone_number(phone):
-    new_phone = (
-        phone.strip()
-        .removeprefix("+")
-        .replace("(", "")
-        .replace(")", "")
-        .replace("-", "")
-        .replace(" ", "")
-    )
-    return new_phone
+def formatted_grades(students):
+    formatted_students = []
+    count = 1 
+    for key, value in students.items():
+        #print('{:>4}|{:<10}|{:^5}|{:^5}'.format(count, key, value, grades[value]))
+        #print(f'{count:>4}|{key:<10}|{value:^5}|{grades[value]:^5}')
+        formatted_students.append('{:>4}|{:<10}|{:^5}|{:^5}'.format(count, key, value, grades[value]))
+        count += 1
+    return formatted_students
 
-def get_phone_numbers_for_countries(list_phones):
-    
-    jp_phones = []
-    tw_phones = []
-    sg_phones = []
-    ua_phones = []
-    phone_map = {"UA": ua_phones,"JP": jp_phones, "TW": tw_phones, "SG": sg_phones}
-    
-    #sorted_phones = sorted(list_phones)
-    for duty_phone in list_phones:
-        phone = sanitize_phone_number(duty_phone)
-
-        if phone.startswith("81"):
-            jp_phones.append(phone)
-        elif phone.startswith("88"):
-            tw_phones.append(phone)
-        elif phone.startswith("65"):
-            sg_phones.append(phone)
-        else:
-            ua_phones.append(phone)
-
-    return phone_map
-
-# print(get_phone_numbers_for_countries(['380998759405', '657658976', '818765347', '8867658976']))
-# print(get_phone_numbers_for_countries(['(65)765-89-77', '(81)8765347', '065-875-94-11', '657658976', '8867658976']))
+# students = {"Nick": "A", "Olga": "B", "Mike": "FX", "Anna": "C"}
+# for el in formatted_grades(students):
+#     print(el)

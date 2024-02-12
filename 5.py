@@ -87,3 +87,66 @@ def get_phone_numbers_for_countries(list_phones):
 
 
 # 5
+# За допомогою функції zip, за аналогією прикладу теорії, створіть словник TRANS для транслітерації. 
+# Створюйте словник TRANS поза функцією translate
+# Напишіть функцію translate, яка проводить транслітерацію кириличного алфавіту на латинську.
+# Функція translate: приймає на вхід рядок та повертає рядок; проводить транслітерацію кириличних символів на латиницю;
+CYRILLIC_SYMBOLS = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяєіїґ"
+TRANSLATION = ("a", "b", "v", "g", "d", "e", "e", "j", "z", "i", "j", "k", "l", "m", "n", "o", "p", "r", "s", "t", "u",
+               "f", "h", "ts", "ch", "sh", "sch", "", "y", "", "e", "yu", "ya", "je", "i", "ji", "g")
+TRANS = dict()
+for cyrilic_symbol, latin_symbol in zip(CYRILLIC_SYMBOLS, TRANSLATION):
+    TRANS[ord(cyrilic_symbol)] = latin_symbol
+    TRANS[ord(cyrilic_symbol.upper())] = latin_symbol.upper()
+#print(TRANS)
+def translate(name):
+    return name.translate(TRANS)
+#print(translate("Дмитро Короб"))  # Dmitro Korob
+#print(translate("Олекса Івасюк"))  # Oleksa Ivasyuk
+
+
+#  Словник TRANS створенний не вірно!
+TRANS = {}
+def translate(name):
+    for c, l in zip(CYRILLIC_SYMBOLS, TRANSLATION):
+        TRANS[ord(c)] = l
+        TRANS[ord(c.upper())] = l.upper()
+    return name.translate(TRANS)
+
+##  Словник TRANS створенний не вірно!
+TRANS = dict(zip(CYRILLIC_SYMBOLS, TRANSLATION))
+def translate(name):
+    translated = ""
+    for char in name:
+        translated += TRANS.get(char, char)
+    return translated
+#-------------------------------------------------------------------------------
+
+
+# 6
+#  Напишіть функцію formatted_grades, яка приймає на вхід словник оцінювання студентів за предмет наступного вигляду:
+# students = {"Nick": "A", "Olga": "B", "Mike": "FX", "Anna": "C"}
+# І повертає список відформатованих рядків, щоб під час виведення наступного коду:
+#    1|Nick      |  A  |  5
+#    2|Olga      |  B  |  5
+#    3|Mike      | FX  |  2
+#    4|Anna      |  C  |  4
+grades = {"A": 5, "B": 5, "C": 4, "D": 3, "E": 3, "FX": 2, "F": 1}
+
+def formatted_grades(students):
+    formatted_students = []
+    count = 1 
+    for key, value in students.items():
+        #print('{:>4}|{:<10}|{:^5}|{:^5}'.format(count, key, value, grades[value]))
+        #print(f'{count:>4}|{key:<10}|{value:^5}|{grades[value]:^5}')
+        formatted_students.append('{:>4}|{:<10}|{:^5}|{:^5}'.format(count, key, value, grades[value]))
+        count += 1
+    return formatted_students
+
+# students = {"Nick": "A", "Olga": "B", "Mike": "FX", "Anna": "C"}
+# for el in formatted_grades(students):
+#     print(el)
+#-------------------------------------------------------------------------------
+
+
+# 7
