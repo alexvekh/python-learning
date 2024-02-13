@@ -1,15 +1,37 @@
-grades = {"A": 5, "B": 5, "C": 4, "D": 3, "E": 3, "FX": 2, "F": 1}
+# Напишіть функцію find_word, яка приймає два параметри: перший text та другий word. 
+# Функція виконує пошук зазначеного слова word у тексті text за допомогою функції search 
+# та повертає словник.
+# {
+#     'result': True,
+#     'first_index': 34,
+#     'last_index': 40,
+#     'search_string': 'Python',
+#     'string': 'Guido van Rossum began working on Python in the late 1980s, as a successor to the ABC programming language, and first released it in 1991 as Python 0.9.0.'
+# }
+# де:
+#   result — результат пошуку True або False
+#   first_index — початкова позиція збігу
+#   last_index — кінцева позиція збігу
+#   search_string — частина рядка, в якому був збіг
+#   string — рядок, переданий у функцію
 
-def formatted_grades(students):
-    formatted_students = []
-    count = 1 
-    for key, value in students.items():
-        #print('{:>4}|{:<10}|{:^5}|{:^5}'.format(count, key, value, grades[value]))
-        #print(f'{count:>4}|{key:<10}|{value:^5}|{grades[value]:^5}')
-        formatted_students.append('{:>4}|{:<10}|{:^5}|{:^5}'.format(count, key, value, grades[value]))
-        count += 1
-    return formatted_students
+import re
 
-# students = {"Nick": "A", "Olga": "B", "Mike": "FX", "Anna": "C"}
-# for el in formatted_grades(students):
-#     print(el)
+def find_word(text, word):
+    d = dict()
+    if re.search(word, text):
+        d['result'] = True
+        matches = re.search(word, text)
+        d["first_index"], d["last_index"] = matches.span()
+    else:
+        d['result'] = False
+        d["first_index"] = None
+        d["last_index"] = None
+
+    d["search_string"] = word
+    d["string"] = text
+    return d
+
+# print(find_word(
+#     "Guido van Rossum began working on Python in the late 1980s, as a successor to the ABC programming language, and first released it in 1991 as Python 0.9.0.",
+#     "Python"))
