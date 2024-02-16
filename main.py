@@ -1,9 +1,9 @@
-import re
+def add_employee_to_file(record, path):
+    f = open(path, "a")
+    try:
+        f.write(record + "\n")   
 
+    finally:
+        f.close()
 
-def replace_spam_words(text, spam_words):
-    for word in spam_words:
-        print(text)
-        text = re.sub(word, "*" * len(word), text, flags=re.IGNORECASE)
-        print(text)
-    return text
+# add_employee_to_file("Boss Boss, 19", "data.txt")
