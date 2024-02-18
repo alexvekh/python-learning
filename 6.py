@@ -105,7 +105,7 @@ sanitize_file('data.txt', 'data2.txt')
 #-------------------------------------------------------------------------------
 
 
-#5
+#6
 # Розробіть функцію save_applicant_data(source, output), яка буде вказаний список 
 # із параметра source зберігати у файл із параметра output
 def save_applicant_data(source, output):
@@ -149,4 +149,73 @@ def save_applicant_data(source, output):
 #-------------------------------------------------------------------------------
 
 
-#6
+#7
+''' 
+Є два рядки у різних кодуваннях - "utf-8" та "utf-16". 
+Нам необхідно зрозуміти, чи дорівнюються рядки між собою.
+
+Реалізуйте функцію is_equal_string(utf8_string, utf16_string), 
+яка повертає True, якщо рядки дорівнюють собі, і False — якщо ні.
+'''
+def is_equal_string(utf8_string, utf16_string):
+    if utf8_string == utf16_string.decode('utf-16').encode():
+        return True
+    else:
+        return False
+#-------------------------------------------------------------------------------
+
+
+#8
+''' 
+Дані про користувачів краще зберігати у форматі бінарних файлів. 
+Тому вам необхідно створити функцію, яка буде записувати логін та пароль користувача у файл.
+
+Реалізуйте функцію save_credentials_users(path, users_info), 
+яка зберігає інформацію про користувачів з паролями в бінарний файл.
+Де:
+    path – шлях до файлу.
+    users_info - словник типу {'andry':'uyro18890D', 'steve':'oppjM13LL9e'}, 
+        де ключ — логін (username) користувача, а значення — його пароль (password).
+Вимоги:
+Кожен рядок файлу повинен мати такий вигляд username:password. 
+Такий формат запису використовують при Базовій аутентифікації.
+Відкрийте файл для запису та збережіть ключ та значення зі словника users_info 
+у вигляді окремого рядка username:password для кожного елемента словника users_info
+'''
+
+def save_credentials_users(path, users_info):
+    with open(path, 'wb') as file:
+        for username, password in users_info.items():
+            line = username + ":" + password + '\n'
+            #print(line)
+            #print(line.encode())
+            file.write(line.encode('utf-8'))
+
+#users = {'andry':'uyro18890D', 'steve':'oppjM13LL9e'}
+#save_credentials_users("data", users)
+#-------------------------------------------------------------------------------
+
+
+#9
+''' 
+Реалізуйте функцію get_credentials_users(path), яка повертає список рядків із бінарного файлу, 
+створеного в попередньому завданню, де: path – шлях до файлу.
+Формат файлу:
+    andry:uyro18890D
+    steve:oppjM13LL9e
+Відкрийте файл для читання, використовуючи with та режим rb. Сформуйте список рядків із файлу та 
+поверніть його з функції get_credentials_users у наступному форматі:
+['andry:uyro18890D', 'steve:oppjM13LL9e']
+Вимоги: Використовуйте менеджер контексту для читання з файлу
+'''
+def get_credentials_users(path):
+    with open(path, 'rb') as file:
+        text = file.read()
+        list = text.decode("utf-8").split("\n")
+    return list
+
+# get_credentials_users("data")
+#-------------------------------------------------------------------------------
+
+
+#10
