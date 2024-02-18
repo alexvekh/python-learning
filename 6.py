@@ -219,3 +219,50 @@ def get_credentials_users(path):
 
 
 #10
+''' 
+Функція повинна працювати так:
+Створювати бінарний файл file_name за шляхом path
+Зберігати дані словника employee_residence у файл, де кожен новий рядок — це 
+ключ значення через пробіл як "Michael Canada"
+Архівувати теку по шляху path за допомогою shutil
+Ім'я архіву має бути backup_folder.zip
+Функція має повернути рядок шляху до архіву backup_folder.zip
+Вимоги:
+ -запишіть вміст словника employee_residence у бінарний файл з ім'ям file_name 
+у теку path за допомогою оператора with.
+ - використовуйте символ /, щоб розділити шлях для path та file_name
+ - вигляд рядка файлу — Michael Canada, в кінці кожного рядка додається перенесення рядка '\n'.
+ - при збереженні кожен рядок файлу кодується методом encode
+ =- при записі рядків використовуємо лише метод write
+ - архів має бути у форматі zip з ім'ям 'backup_folder', створений за допомогою make_archive.
+'''
+import shutil
+def create_backup(path, file_name, employee_residence):
+    print(path, file_name, employee_residence)
+    file_path = path + '/' + file_name
+    print(file_path)
+    with open(file_path, 'wb') as file:
+        for employee, residence in employee_residence.items():
+            line = employee + ' ' + residence  + '\n'
+            print(line)
+            file.write(line.encode('utf-8'))
+    archive_name = shutil.make_archive('backup_folder', 'zip', path)
+    return archive_name
+
+# employee_residence = {'Michael':'Canada', 'Steve':'USA'}
+# create_backup("a", "data.bin", employee_residence)
+#-------------------------------------------------------------------------------
+
+
+#11
+''' 
+Створіть функціонал для розпакування архіву.
+Зробіть import пакету shutil
+Створіть функцію unpack(archive_path, path_to_unpack), яка викликатиме метод пакета shutil 
+unpack_archive та розпаковуватиме архів archive_path у місце path_to_unpack.
+Функція нічого не повертає.
+'''
+import shutil
+
+def unpack(archive_path, path_to_unpack):
+    shutil.unpack_archive(archive_path, path_to_unpack)
