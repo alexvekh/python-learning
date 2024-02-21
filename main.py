@@ -1,34 +1,40 @@
-''' 
-Підсписком (sublist) називають список, що є складовою більшого списку. 
-Підсписок може містити один елемент, множину елементів або бути порожнім.
-Наприклад, [1], [2], [3] та [4] є підсписками списку [1, 2, 3, 4]. 
-Список [2, 3] також входить до складу [1, 2, 3, 4], але при цьому список [2, 4] 
-не є підсписком [1, 2, 3, 4], оскільки у вихідному списку числа 2 і 4 не є сусідами.
-Порожній список є підсписком будь-якого списку.
-Напишіть функцію all_sub_lists, що повертає список, який містить всі можливі підсписки заданого.
-Наприклад, якщо функції передано аргумент список [1, 2, 3], то функція має повернути 
-наступний список: [[], [1], [2], [3], [1, 2], [2, 3], [1, 2, 3]].
-Функція all_sub_lists повинна повертати щонайменше один список з порожнім підсписком [[]].
-'''
-def all_sub_lists(data):
-    if data == []:
-        return [[]]
-    else:
-        sub = []
-        sub.append([])
-        for el in data:
-            sub.append([el])
-        
-        for i in range(len(data)-1):
-            sub.append([data[i], data[i + 1]])
-        
-        for i in range(len(data)-2):
-            sub.append([data[i], data[i + 1], data[i + 2]])
-        sub.append(data)
+# Напишіть функцію to_indexed(source_file, output_file), яка зчитуватиме вміст файлу, 
+# додаватиме до прочитаних рядків порядковий номер і зберігати їх у такому вигляді у новому файлі.
+# Кожний рядок у створеному файлі повинен починатися з його номера, двокрапки та пробілу, 
+# після чого має йти текст рядка з вхідного файлу.
+# Нумерація рядків іде від 0.
 
-    #print(sub)
-    return sub
+def to_indexed(source_file, output_file):
+    with open(source_file, 'r') as source:
+        with open(output_file, 'w') as output:
+            count = 0
+            for line in source:
+                output.write(str(count) + ": " + line)
+                count += 1
 
-# data = [1, 2, 3]
-# all_sub_lists(data)
+
+
+
+def get_employees_by_profession(path, profession):
+    with open(path, 'r') as file:
+        lines = file.readlines()
+    #print(lines)
+    
+    pro_list = []
+    for line in lines:
+        if line.find(profession) >= 0:
+            line = line.replace(' courier\n', '')
+            pro_list.append(line)
+    #print(pro_list)
+
+    names = ' '.join(pro_list)
+    return names
+
+# get_employees_by_profession('data.txt', 'courier')
+
+
+
+
+
+
 
