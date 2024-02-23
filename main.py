@@ -1,21 +1,49 @@
-# Розробіть функцію get_days_from_today(date), яка повертатиме кількість днів від поточної дати, 
-# де параметр date - це рядок формату '2020-10-09' (рік-місяць-день).
-# Підказки:
-#  - Параметр date розбити на рік, місяць та день можна використовуючи метод рядків split.
-#  - datetime приймає аргументи типу int, використовуйте перетворення типів.
-#  - ігноруйте години, хвилини та секунди для вашої дати, важливі повні дні.
-#  - кількість днів ви можете отримати відніманням з поточної дати, заданої в змінній date (без часу).
-# Наприклад: Якщо поточна дата - '5 травня 2021', то виклик get_days_from_today("2021-10-09") поверне нам -157.
+# У нас є іменований кортеж для зберігання котів у змінній Cat. 
+# На першому місці у нас кличка котика nickname, потім його вік age 
+# та ім'я власника кота owner.
+# Напишіть функцію convert_list(cats), яка працюватиме у двох режимах.
+# Якщо функція convert_list приймає у параметрі cats список іменованих кортежів
+# [Cat("Mick", 5, "Sara"), Cat("Barsik", 7, "Olga"), Cat("Simon", 3, "Yura")]
+# То функція поверне наступний список словників:
+# [
+#     {"nickname": "Mick", "age": 5, "owner": "Sara"},
+#     {"nickname": "Barsik", "age": 7, "owner": "Olga"},
+#     {"nickname": "Simon", "age": 3, "owner": "Yura"},
+# ]
+# І в той же час, якщо функція convert_list приймає в параметрі cats список словників, 
+# то результатом буде зворотна операція та функція поверне список іменованих кортежів.
+# Для визначення типу параметра cats використовуйте функцію isinstance.
 
-from datetime import datetime
+import collections
 
-def get_days_from_today(date):
-    year, month, day = date.split("-")
-    d1 = datetime(year=int(year), month=int(month), day=int(day))
-    #print(d1)
-    current = datetime.now()
-    difference = current - d1
-    #print(difference.days)
-    return difference.days
+Cat = collections.namedtuple("Cat", ["nickname", "age", "owner"])
 
-#get_days_from_today('2020-10-09')
+def is_map_list(list):
+    return all(isinstance(item, dict) for item in list)
+
+def is_tuple_list(list): 
+    return all(isinstance(item, tuple) for item in list)
+
+def convert_list(cats):
+    if is_map_list(cats):
+        new_list = []
+        for cat in cats:
+            new_list.append(Cat(nickname=cat["nickname"], age=cat['age'], owner=cat['owner']))
+
+    if is_tuple_list(cats):
+        new_list = []
+        for cat in cats:
+            new_list.append({"nickname": cat.nickname, "age": cat.age, "owner": cat.owner})
+
+    return new_list        
+
+# cats =  [Cat("Mick", 5, "Sara"), Cat("Barsik", 7, "Olga"), Cat("Simon", 3, "Yura")]
+# cats2 = [
+#     {"nickname": "Mick", "age": 5, "owner": "Sara"},
+#     {"nickname": "Barsik", "age": 7, "owner": "Olga"},
+#     {"nickname": "Simon", "age": 3, "owner": "Yura"},
+# ]
+
+# print(convert_list(cats))
+# print(convert_list(cats2))
+
