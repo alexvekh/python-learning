@@ -1,22 +1,47 @@
-# Для попереднього завдання реалізуйте в класі Animal метод change_weight, 
-# який має змінювати вагу тварини.
-# Викличте функцію change_weight(12) для об'єкта animal та змініть значення 
-# початкової ваги з 10 на 12 одиниць.
+# Реалізуйте клас Contacts, який працюватиме з контактами. На першому етапі ми додамо два методи.
+#   list_contacts повертає список контактів це змінна contacts з поточного екземпляра класу
+#   add_contacts додає новий контакт до списку, який є змінною об'єкту - contacts
+# Contacts.current_id - унік id контакту. 
+# Коли ми додаємо новий контакт, то передаємо аргументи в метод # add_contacts: name, phone, email та favorite. 
+# Метод повинен створити словник із зазначеними ключами та значеннями параметрів функції. 
+# Також необхідно додати до словника новий ключ id, значенням якого є значення змінної класу current_id.
+# Приклад отриманого словника:
+#     {
+#     "id": 1,
+#     "name": "Wylie Pope",
+#     "phone": "(692) 802-2949",
+#     "email": "est@utquamvel.net",
+#     "favorite": True,
+#     }
+# Вказаний словник ми додаємо до списку contacts. 
+# Не забуваймо збільшувати змінну current_id на одиницю після кожного виклику методу add_contacts.
+# Примітка: для правильного проходження тесту не створюйте екземпляр класу в коді.
 
-class Animal:
-    def __init__(self, nickname, weight):
-        self.nickname = nickname
-        self.weight = weight
+class Contacts:
+    current_id = 1
 
-    def say(self):
-        pass
+    def __init__(self):
+        self.contacts = []
 
-    def change_weight(self, weight):
-        self.weight = weight
+    def list_contacts(self):
+        return self.contacts
 
-  
-animal = Animal("Simon", 10)
-animal.change_weight(12)
+    def add_contacts(self, name, phone, email, favorite):
+        contact = {
+            "id": self.__class__.current_id, 
+            "name": name,
+            "phone": phone,
+            "email": email,
+            "favorite": favorite,
+        }
+        self.__class__.current_id += 1
+        self.contacts.append(contact)
 
 # Test
-# print(animal.weight)
+# contacts = Contacts()
+# print(contacts)
+# print(contacts.contacts)
+# contacts.add_contacts("Wylie Pope", "(692) 802-2949", "est@utquamvel.net", True)
+# print(contacts.contacts)
+# print(contacts.list_contacts())
+
