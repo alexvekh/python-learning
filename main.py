@@ -1,47 +1,120 @@
-# Реалізуйте клас Contacts, який працюватиме з контактами. На першому етапі ми додамо два методи.
-#   list_contacts повертає список контактів це змінна contacts з поточного екземпляра класу
-#   add_contacts додає новий контакт до списку, який є змінною об'єкту - contacts
-# Contacts.current_id - унік id контакту. 
-# Коли ми додаємо новий контакт, то передаємо аргументи в метод # add_contacts: name, phone, email та favorite. 
-# Метод повинен створити словник із зазначеними ключами та значеннями параметрів функції. 
-# Також необхідно додати до словника новий ключ id, значенням якого є значення змінної класу current_id.
-# Приклад отриманого словника:
-#     {
-#     "id": 1,
-#     "name": "Wylie Pope",
-#     "phone": "(692) 802-2949",
-#     "email": "est@utquamvel.net",
-#     "favorite": True,
-#     }
-# Вказаний словник ми додаємо до списку contacts. 
-# Не забуваймо збільшувати змінну current_id на одиницю після кожного виклику методу add_contacts.
-# Примітка: для правильного проходження тесту не створюйте екземпляр класу в коді.
+class Point:
+    def __init__(self, x, y):
+        self.__x = None
+        self.__y = None
+        self.x = x
+        self.y = y
 
-class Contacts:
-    current_id = 1
+    @property
+    def x(self):
+        return self.__x
 
-    def __init__(self):
-        self.contacts = []
+    @x.setter
+    def x(self, x):
+        if (type(x) == int) or (type(x) == float):
+            self.__x = x
 
-    def list_contacts(self):
-        return self.contacts
+    @property
+    def y(self):
+        return self.__y
 
-    def add_contacts(self, name, phone, email, favorite):
-        contact = {
-            "id": self.__class__.current_id, 
-            "name": name,
-            "phone": phone,
-            "email": email,
-            "favorite": favorite,
-        }
-        self.__class__.current_id += 1
-        self.contacts.append(contact)
+    @y.setter
+    def y(self, y):
+        if (type(y) == int) or (type(y) == float):
+            self.__y = y
+    
+    def __str__(self):
+        return f'Point({self.__x}, {self.__y})'
 
-# Test
-# contacts = Contacts()
-# print(contacts)
-# print(contacts.contacts)
-# contacts.add_contacts("Wylie Pope", "(692) 802-2949", "est@utquamvel.net", True)
-# print(contacts.contacts)
-# print(contacts.list_contacts())
 
+class Vector:
+    def __init__(self, coordinates: Point):
+        self.coordinates = coordinates
+
+
+    def __setitem__(self, index, value):
+        if index == 0:
+            self.coordinates.x = value
+        elif index == 1:
+            self.coordinates.y = value
+        else:
+            raise IndexError("Invalid index for Vector")
+
+    def __getitem__(self, index):
+        if index == 0:
+            return self.coordinates.x
+        elif index == 1:
+            return self.coordinates.y
+        else:
+            raise IndexError("Invalid index for Vector")
+
+    def __call__(self, value=None):
+        if value == None:
+            value = 1
+        return (self.coordinates.x * value, self.coordinates.y * value)
+
+    def __add__(self, vector):
+        new_x = self.coordinates.x + vector.coordinates.x
+        new_y = self.coordinates.y + vector.coordinates.y
+        return Vector(Point(new_x, new_y))
+        
+    def __sub__(self, vector):
+        new_x = self.coordinates.x - vector.coordinates.x
+        new_y = self.coordinates.y - vector.coordinates.y
+        return Vector(Point(new_x, new_y))
+
+    def __mul__(self, vector):
+        xx = self.coordinates.x * vector.coordinates.x
+        yy = self.coordinates.y * vector.coordinates.y
+        return xx + yy
+    
+    def len(self):
+        return (self.coordinates.x ** 2 + self.coordinates.y ** 2) ** 0.5
+
+    def __str__(self):
+        return f'Vector({self.coordinates.x}, {self.coordinates.y})'
+
+    def __eq__(self, vector):
+        if self.len() == vector.len():
+            return True
+        else:
+            return False
+        
+    def __ne__(self, vector):
+        if self.len() != vector.len():
+            return True
+        else:
+            return False
+
+    def __lt__(self, vector):
+        if self.len() < vector.len():
+            return True
+        else:
+            return False
+
+    def __gt__(self, vector):
+        if self.len() > vector.len():
+            return True
+        else:
+            return False
+
+    def __le__(self, vector):
+        if self.len() <= vector.len():
+            return True
+        else:
+            return False
+
+    def __ge__(self, vector):
+        if self.len() >= vector.len():
+            return True
+        else:
+            return False
+
+vector1 = Vector(Point(1, 10))
+vector2 = Vector(Point(3, 10))
+print(vector1 == vector2)  # False
+print(vector1 != vector2)  # True
+print(vector1 > vector2)  # False
+print(vector1 < vector2)  # True
+print(vector1 >= vector2)  # False
+print(vector1 <= vector2)  # True
