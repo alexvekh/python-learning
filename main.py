@@ -1,120 +1,63 @@
-class Point:
-    def __init__(self, x, y):
-        self.__x = None
-        self.__y = None
-        self.x = x
-        self.y = y
+# Додайте до класу Contacts атрибут count_save, за замовчуванням він повинен мати значення 0. 
+# Реалізуйте магічний метод __getstate__ для класу Contacts. 
+# При упаковуванні екземпляра метод класу повинен збільшувати значення атрибута count_save на одиницю. 
+# Таким чином, ця властивість - лічильник повторних операцій пакування екземпляра класу
 
-    @property
-    def x(self):
-        return self.__x
+import pickle
 
-    @x.setter
-    def x(self, x):
-        if (type(x) == int) or (type(x) == float):
-            self.__x = x
 
-    @property
-    def y(self):
-        return self.__y
+class Person:
+    def __init__(self, name: str, email: str, phone: str, favorite: bool):
+        self.name = name
+        self.email = email
+        self.phone = phone
+        self.favorite = favorite
 
-    @y.setter
-    def y(self, y):
-        if (type(y) == int) or (type(y) == float):
-            self.__y = y
+class Contacts:
+   
+    def __init__(self, filename: str, contacts: list[Person] = None):
+        if contacts is None:
+            contacts = []
+        self.filename = filename
+        self.contacts = contacts
+        self.count_save = 0
+        self.is_unpacking = False           # is_unpacking
+
+    def save_to_file(self):
+        with open(self.filename, "wb") as file:
+            pickle.dump(self, file)
+
+    def read_from_file(self):
+        with open(self.filename, "rb") as file:
+            content = pickle.load(file)
+        return content
+
+    def __getstate__(self):
+        copy = self.__dict__.copy()
+        copy['count_save'] += 1
+        return copy
     
-    def __str__(self):
-        return f'Point({self.__x}, {self.__y})'
+    def __setstate__(self, value):
+        self.__dict__ = value
+        self.is_unpacking = True            # is_unpacking = True
 
+contacts = [
+    Person(
+        "Allen Raymond",
+        "nulla.ante@vestibul.co.uk",
+        "(992) 914-3792",
+        False,
+    ),
+    Person(
+        "Chaim Lewis",
+        "dui.in@egetlacus.ca",
+        "(294) 840-6685",
+        False,
+    ),
+]
 
-class Vector:
-    def __init__(self, coordinates: Point):
-        self.coordinates = coordinates
-
-
-    def __setitem__(self, index, value):
-        if index == 0:
-            self.coordinates.x = value
-        elif index == 1:
-            self.coordinates.y = value
-        else:
-            raise IndexError("Invalid index for Vector")
-
-    def __getitem__(self, index):
-        if index == 0:
-            return self.coordinates.x
-        elif index == 1:
-            return self.coordinates.y
-        else:
-            raise IndexError("Invalid index for Vector")
-
-    def __call__(self, value=None):
-        if value == None:
-            value = 1
-        return (self.coordinates.x * value, self.coordinates.y * value)
-
-    def __add__(self, vector):
-        new_x = self.coordinates.x + vector.coordinates.x
-        new_y = self.coordinates.y + vector.coordinates.y
-        return Vector(Point(new_x, new_y))
-        
-    def __sub__(self, vector):
-        new_x = self.coordinates.x - vector.coordinates.x
-        new_y = self.coordinates.y - vector.coordinates.y
-        return Vector(Point(new_x, new_y))
-
-    def __mul__(self, vector):
-        xx = self.coordinates.x * vector.coordinates.x
-        yy = self.coordinates.y * vector.coordinates.y
-        return xx + yy
-    
-    def len(self):
-        return (self.coordinates.x ** 2 + self.coordinates.y ** 2) ** 0.5
-
-    def __str__(self):
-        return f'Vector({self.coordinates.x}, {self.coordinates.y})'
-
-    def __eq__(self, vector):
-        if self.len() == vector.len():
-            return True
-        else:
-            return False
-        
-    def __ne__(self, vector):
-        if self.len() != vector.len():
-            return True
-        else:
-            return False
-
-    def __lt__(self, vector):
-        if self.len() < vector.len():
-            return True
-        else:
-            return False
-
-    def __gt__(self, vector):
-        if self.len() > vector.len():
-            return True
-        else:
-            return False
-
-    def __le__(self, vector):
-        if self.len() <= vector.len():
-            return True
-        else:
-            return False
-
-    def __ge__(self, vector):
-        if self.len() >= vector.len():
-            return True
-        else:
-            return False
-
-vector1 = Vector(Point(1, 10))
-vector2 = Vector(Point(3, 10))
-print(vector1 == vector2)  # False
-print(vector1 != vector2)  # True
-print(vector1 > vector2)  # False
-print(vector1 < vector2)  # True
-print(vector1 >= vector2)  # False
-print(vector1 <= vector2)  # True
+persons = Contacts("user_class.dat", contacts)
+persons.save_to_file()
+person_from_file = persons.read_from_file()
+print(persons.is_unpacking)  # False
+print(person_from_file.is_unpacking)  # True
