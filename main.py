@@ -1,8 +1,4 @@
-# Додайте до класу Contacts атрибут count_save, за замовчуванням він повинен мати значення 0. 
-# Реалізуйте магічний метод __getstate__ для класу Contacts. 
-# При упаковуванні екземпляра метод класу повинен збільшувати значення атрибута count_save на одиницю. 
-# Таким чином, ця властивість - лічильник повторних операцій пакування екземпляра класу
-
+import copy
 import pickle
 
 
@@ -13,15 +9,22 @@ class Person:
         self.phone = phone
         self.favorite = favorite
 
+    def __copy__(self):
+        copy_obj = Person('', '', '', False)
+        copy_obj.name = copy.copy(self.name)
+        copy_obj.email = copy.copy(self.email)
+        copy_obj.phone = copy.copy(self.phone)
+        copy_obj.favorite = copy.copy(self.favorite)
+        return copy_obj
+
 class Contacts:
-   
     def __init__(self, filename: str, contacts: list[Person] = None):
         if contacts is None:
             contacts = []
         self.filename = filename
         self.contacts = contacts
+        self.is_unpacking = False
         self.count_save = 0
-        self.is_unpacking = False           # is_unpacking
 
     def save_to_file(self):
         with open(self.filename, "wb") as file:
@@ -33,31 +36,27 @@ class Contacts:
         return content
 
     def __getstate__(self):
-        copy = self.__dict__.copy()
-        copy['count_save'] += 1
-        return copy
-    
+        attributes = self.__dict__.copy()
+        attributes["count_save"] = attributes["count_save"] + 1
+        return attributes
+
     def __setstate__(self, value):
         self.__dict__ = value
-        self.is_unpacking = True            # is_unpacking = True
+        self.is_unpacking = True
 
-contacts = [
-    Person(
-        "Allen Raymond",
-        "nulla.ante@vestibul.co.uk",
-        "(992) 914-3792",
-        False,
-    ),
-    Person(
-        "Chaim Lewis",
-        "dui.in@egetlacus.ca",
-        "(294) 840-6685",
-        False,
-    ),
-]
-
-persons = Contacts("user_class.dat", contacts)
-persons.save_to_file()
-person_from_file = persons.read_from_file()
-print(persons.is_unpacking)  # False
-print(person_from_file.is_unpacking)  # True
+    def __copy__(self):
+        copy_obj = Contacts('')
+        copy_obj.filename = copy.copy(self.filename)
+        copy_obj.contacts = copy.copy(self.contacts)
+        copy_obj.is_unpacking = copy.copy(self.is_unpacking)
+        copy_obj.count_save = copy.copy(self.count_save)
+        return copy_obj
+        
+    def __deepcopy__(self, memo):
+        copy_obj = Contacts('')
+        memo[id(copy_obj)] = copy_obj
+        copy_obj.filename = copy.deepcopy(self.filename)
+        copy_obj.contacts = copy.deepcopy(self.contacts)
+        copy_obj.is_unpacking = copy.deepcopy(self.is_unpacking)
+        copy_obj.count_save = copy.deepcopy(self.count_save)
+        return copy_obj
